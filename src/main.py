@@ -25,6 +25,7 @@ if __name__ == "__main__":
         broadcaster.start_broadcasting()
         broadcaster.start_listening()
 
+        print("[*] Type /help for instructions")
         while True:
             command = input("> ").split()
 
@@ -33,6 +34,7 @@ if __name__ == "__main__":
 
             if command[0] == "/quit":
                 broadcaster.end_process()
+                print("[*] Connection closed")
                 break
 
             elif command[0] == "/help":
@@ -64,6 +66,4 @@ if __name__ == "__main__":
                 print(f'[*] Your status set to "{host.state}"')
 
     except KeyboardInterrupt:
-        print("BYE")
-    finally:
-        print("BYE")
+        print("[*] Connection closed")
