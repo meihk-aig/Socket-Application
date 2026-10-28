@@ -28,9 +28,3 @@ def print_help_message():
     print("    /status <online|away>     Change your status (sent via UDP)")
     print("    /help                     Show all commands")
     print("    /quit                     Exit the program")
-
-
-# This is the global variable that other process used to store data
-state = "online"
-peers = {}
-stop_flag = thd.Event()

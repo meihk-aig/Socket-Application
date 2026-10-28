@@ -20,25 +20,9 @@ if __name__ == "__main__":
 
         host = p.Peer(lst.name)
 
-        # Create one thread to broadcast your online status
-        broadcast_thread = thd.Thread(
-            target=send_broadcast_message,
-            args=(
-                host,
-                lst.bcast,
-                lst.tcp_port,
-            ),
-        )
-        broadcast_thread.daemon = True
-        # Create another thread to get online status of others in your LAN
-        recieve_thread = thd.Thread(target=get_broadcast_message, args=(host,))
-        recieve_thread.daemon = True
-
-        # Start the two threads
-        print(f"[*] Listening on TCP port {lst.tcp_port}")
-        recieve_thread.start()
-        print(f"[*] Broadcasting presence on UDP port {p.PORT}")
-        broadcast_thread.start()
+        broadcaster = Broadcaster(host, lst.bcast, lst.tcp_port)
+        broadcaster.start_broadcasting()
+        broadcaster.start_listening()
 
         while True:
             command = input("> ").split()
@@ -47,7 +31,7 @@ if __name__ == "__main__":
                 continue
 
             if command[0] == "/quit":
-                p.stop_flag.set()
+                broadcaster.end_process()
                 break
             elif command[0] == "/help":
                 p.print_help_message()
