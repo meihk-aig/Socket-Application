@@ -24,5 +24,6 @@ def print_help_message():
 
 
 # This is the global variable that other process used to store data
+state = "online"
 peers = {}
 stop_flag = thd.Event()
