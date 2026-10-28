@@ -1,5 +1,5 @@
 from broadcast import *
-import peers as p
+import peer as p
 
 import threading as thd
 import time as tm
@@ -18,18 +18,20 @@ if __name__ == "__main__":
 
         lst = parser.parse_args()
 
+        host = p.Peer(lst.name)
+
         # Create one thread to broadcast your online status
         broadcast_thread = thd.Thread(
             target=send_broadcast_message,
             args=(
-                lst.name,
+                host,
                 lst.bcast,
                 lst.tcp_port,
             ),
         )
         broadcast_thread.daemon = True
         # Create another thread to get online status of others in your LAN
-        recieve_thread = thd.Thread(target=get_broadcast_message, args=(lst.name,))
+        recieve_thread = thd.Thread(target=get_broadcast_message, args=(host,))
         recieve_thread.daemon = True
 
         # Start the two threads
@@ -53,7 +55,7 @@ if __name__ == "__main__":
                 current_time = tm.time()
 
                 index = 1
-                for name, info in p.peers.items():
+                for name, info in host.peers.items():
                     current_state = info["state"]
 
                     if current_time - info["last_seen"] > p.TIMEOUT:
@@ -64,11 +66,11 @@ if __name__ == "__main__":
                     index += 1
             elif command[0] == "/status" and len(command) == 2:
                 if command[1] == "online":
-                    p.state = "online"
+                    host.state = "online"
                 elif command[1] == "away":
-                    p.state = "away"
+                    host.state = "away"
 
-                print(f'[*] Your status set to "{p.state}"')
+                print(f'[*] Your status set to "{host.state}"')
 
     except KeyboardInterrupt:
         print("BYE")

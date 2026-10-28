@@ -7,6 +7,13 @@ PORT = 9191
 TIMEOUT = 10
 
 
+class Peer:
+    def __init__(self, peer_name):
+        self.name = peer_name
+        self.peers = {}
+        self.state = "online"
+
+
 def print_help_message():
     print("[*] Available commands: ")
     print(

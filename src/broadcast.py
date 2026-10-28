@@ -1,4 +1,4 @@
-import peers as p
+import peer as p
 import threading as thd
 import time as tm
 import socket as sk
@@ -17,7 +17,7 @@ def make_udp_socket():
     return conn
 
 
-def get_broadcast_message(name):
+def get_broadcast_message(host):
     # Create an UDP socket to listen to the message
     conn = make_udp_socket()
 
@@ -30,7 +30,7 @@ def get_broadcast_message(name):
         # Split the message into parts to get the information
         info = msg.split("|")
         # Skip the broadcast of this socket
-        if len(info) == 4 and info[0] == "!LOL" and info[1] == name:
+        if len(info) == 4 and info[0] == "!LOL" and info[1] == host.name:
             continue
 
         peer_name = info[1]
@@ -39,7 +39,7 @@ def get_broadcast_message(name):
         peer_state = info[3]
 
         # Add the information recieved to the peers dictionary which is a global variable
-        p.peers[peer_name] = {
+        host.peers[peer_name] = {
             "ip": peer_ip,
             "port": tcp_port,
             "last_seen": tm.time(),
@@ -51,14 +51,14 @@ def get_broadcast_message(name):
             break
 
 
-def send_broadcast_message(name, bcast, tcp_port):
+def send_broadcast_message(host, bcast, tcp_port):
     # Create an UDP socket to send the message to others to tell them that you are online
     conn = make_udp_socket()
 
     # Send message to the PORT every 3 seconds
     while True:
         # Make the message and encode it to bytes
-        msg = f"!LOL|{name}|{tcp_port}|{p.state}".encode(p.FORMAT)
+        msg = f"!LOL|{host.name}|{tcp_port}|{host.state}".encode(p.FORMAT)
         # The variable addr holds IP limits (defalt = 255.255.255.255) and the PORT that the others are listening to
         addr = (bcast, p.PORT)
         # Send the message and the adress
