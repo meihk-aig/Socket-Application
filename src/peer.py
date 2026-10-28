@@ -1,11 +1,5 @@
 import threading as thd
 
-FORMAT = "utf-8"
-HEADER = 1024
-
-PORT = 9191
-TIMEOUT = 10
-
 
 class Peer:
     def __init__(self, peer_name):

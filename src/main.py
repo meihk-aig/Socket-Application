@@ -1,5 +1,6 @@
 from broadcast import *
 import peer as p
+import const_val as c
 
 import threading as thd
 import time as tm
@@ -33,8 +34,10 @@ if __name__ == "__main__":
             if command[0] == "/quit":
                 broadcaster.end_process()
                 break
+
             elif command[0] == "/help":
                 p.print_help_message()
+
             elif command[0] == "/list":
                 current_time = tm.time()
 
@@ -42,17 +45,21 @@ if __name__ == "__main__":
                 for name, info in host.peers.items():
                     current_state = info["state"]
 
-                    if current_time - info["last_seen"] > p.TIMEOUT:
+                    if current_time - info["last_seen"] > c.TIMEOUT:
                         current_state = "away"
 
                     print(f"    {index}. {name} ({info['ip']}) {current_state}")
 
                     index += 1
+
             elif command[0] == "/status" and len(command) == 2:
                 if command[1] == "online":
                     host.state = "online"
                 elif command[1] == "away":
                     host.state = "away"
+                else:
+                    print('[*] Your status must be "online" or "away"')
+                    continue
 
                 print(f'[*] Your status set to "{host.state}"')
 
