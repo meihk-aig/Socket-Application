@@ -6,6 +6,7 @@ class Peer:
         self.name = peer_name
         self.peers = {}
         self.state = "online"
+        self.peers_lock = thd.Lock()
 
 
 def print_help_message():

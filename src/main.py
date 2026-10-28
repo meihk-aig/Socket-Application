@@ -43,16 +43,18 @@ if __name__ == "__main__":
             elif command[0] == "/list":
                 current_time = tm.time()
 
-                index = 1
-                for name, info in host.peers.items():
-                    current_state = info["state"]
+                with host.peers_lock:
+                    index = 1
+                    peers_snapshot = host.peers.copy()
+                    for name, info in peers_snapshot.items():
+                        current_state = info["state"]
 
-                    if current_time - info["last_seen"] > c.TIMEOUT:
-                        current_state = "away"
+                        if current_time - info["last_seen"] > c.TIMEOUT:
+                            current_state = "away"
 
-                    print(f"    {index}. {name} ({info['ip']}) {current_state}")
+                        print(f"    {index}. {name} ({info['ip']}) {current_state}")
 
-                    index += 1
+                        index += 1
 
             elif command[0] == "/status" and len(command) == 2:
                 if command[1] == "online":

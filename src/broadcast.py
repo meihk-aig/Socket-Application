@@ -51,12 +51,13 @@ class Broadcaster:
             peer_state = info[3]
 
             # Add the information recieved to the peers dictionary which is a global variable
-            host.peers[peer_name] = {
-                "ip": peer_ip,
-                "port": tcp_port,
-                "last_seen": tm.time(),
-                "state": peer_state,
-            }
+            with host.peers_lock:
+                host.peers[peer_name] = {
+                    "ip": peer_ip,
+                    "port": tcp_port,
+                    "last_seen": tm.time(),
+                    "state": peer_state,
+                }
 
             if self.stop_flag.is_set():
                 break
