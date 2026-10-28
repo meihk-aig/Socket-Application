@@ -3,12 +3,6 @@ import threading as thd
 import time as tm
 import socket as sk
 
-FORMAT = "utf-8"
-HEADER = 1024
-
-PORT = 9191
-TIMEOUT = 10
-
 
 def make_udp_socket():
     # Create an UDP socket with SOCK_DGRAM parameter

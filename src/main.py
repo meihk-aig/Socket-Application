@@ -6,12 +6,6 @@ import time as tm
 import socket as sk
 import argparse as ap
 
-FORMAT = "utf-8"
-HEADER = 1024
-
-PORT = 9191
-TIMEOUT = 10
-
 if __name__ == "__main__":
     try:
         # These are parser from the argparse module
@@ -33,12 +27,16 @@ if __name__ == "__main__":
                 lst.tcp_port,
             ),
         )
+        broadcast_thread.daemon = True
         # Create another thread to get online status of others in your LAN
         recieve_thread = thd.Thread(target=get_broadcast_message, args=(lst.name,))
+        recieve_thread.daemon = True
 
         # Start the two threads
-        broadcast_thread.start()
+        print(f"[*] Listening on TCP port {lst.tcp_port}")
         recieve_thread.start()
+        print(f"[*] Broadcasting presence on UDP port {PORT}")
+        broadcast_thread.start()
 
         while True:
             command = input("> ")
@@ -46,6 +44,8 @@ if __name__ == "__main__":
             if command == "/quit":
                 stop_flag.set()
                 break
+            elif command == "/help":
+                print_help_message()
             elif command == "/list":
                 current_time = tm.time()
 
@@ -61,6 +61,6 @@ if __name__ == "__main__":
                     index += 1
 
     except KeyboardInterrupt:
-        print("\nBYE\n")
+        print("BYE")
     finally:
-        print("\nBYE\n")
+        print("BYE")
