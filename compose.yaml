@@ -1,0 +1,38 @@
+
+services:
+  alice:
+    build: .
+    container_name: Alice
+    stdin_open: true
+    tty: true
+    command: python ./src/main.py --name Alice --tcp-port 5050
+    networks:
+      p2p_network:
+        ipv4_address: 172.20.0.2
+
+  bob:
+    build: .
+    container_name: Bob
+    stdin_open: true
+    tty: true
+    command: python ./src/main.py --name Bob --tcp-port 5051
+    networks:
+      p2p_network:
+        ipv4_address: 172.20.0.3
+
+  charlie:
+    build: .
+    container_name: Charlie
+    stdin_open: true
+    tty: true
+    command: python ./src/main.py --name Charlie --tcp-port 5052
+    networks:
+      p2p_network:
+        ipv4_address: 172.20.0.4
+
+networks:
+  p2p_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24

@@ -10,6 +10,11 @@ import argparse as ap
 
 if __name__ == "__main__":
     try:
+        while True:
+            comm = input("> ")
+            if comm == "/start":
+                break
+
         # These are parser from the argparse module
         # Eg: Run "python .\src\main.py --name Mathhew" to start the program and set your name Matthew
 
@@ -28,8 +33,7 @@ if __name__ == "__main__":
 
         print("Hello")
 
-        chat = cht.ChatManager(lst.tcp_port, lst.name, host)
-        chat.start_listening()
+        manager = cht.ChatManager(lst.tcp_port, host)
 
         print("Hello")
 
@@ -74,6 +78,27 @@ if __name__ == "__main__":
                     continue
 
                 print(f'[*] Your status set to "{host.state}"')
+
+            elif command[0] == "/chat":
+                if len(command) != 2:
+                    print("[8] /chat syntax must be /chat <peer_name>")
+                    continue
+
+                peer_name = command[1]
+                manager.start_chat(peer_name)
+
+                while True:
+                    message = input("> ").strip()
+
+                    if not message:
+                        continue
+
+                    if message == "/leave":
+                        print(f"[*] You have left the chat with {peer_name}")
+                        manager.leave_chat()
+                        break
+
+                    manager.send_message(peer_name, message)
 
     except KeyboardInterrupt:
         print("[*] Connection closed")
