@@ -1,6 +1,7 @@
 from broadcast import *
 import peer as p
 import const_val as c
+import chat as cht
 
 import threading as thd
 import time as tm
@@ -25,6 +26,13 @@ if __name__ == "__main__":
         broadcaster.start_broadcasting()
         broadcaster.start_listening()
 
+        print("Hello")
+
+        chat = cht.ChatManager(lst.tcp_port, lst.name, host)
+        chat.start_listening()
+
+        print("Hello")
+
         print("[*] Type /help for instructions")
         while True:
             command = input("> ").split()
@@ -32,15 +40,15 @@ if __name__ == "__main__":
             if len(command) == 0:
                 continue
 
-            if command[0] == "/quit":
+            if command[0] == "/quit":  # /quit
                 broadcaster.end_process()
                 print("[*] Connection closed")
                 break
 
-            elif command[0] == "/help":
+            elif command[0] == "/help":  # /help
                 p.print_help_message()
 
-            elif command[0] == "/list":
+            elif command[0] == "/list":  # /list
                 current_time = tm.time()
 
                 with host.peers_lock:
@@ -56,7 +64,7 @@ if __name__ == "__main__":
 
                         index += 1
 
-            elif command[0] == "/status" and len(command) == 2:
+            elif command[0] == "/status" and len(command) == 2:  # /status
                 if command[1] == "online":
                     host.state = "online"
                 elif command[1] == "away":

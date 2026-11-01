@@ -8,6 +8,9 @@ class Peer:
         self.state = "online"
         self.peers_lock = thd.Lock()
 
+        self.unread_lock = thd.Lock()
+        self.unread = {}
+
 
 def print_help_message():
     print("[*] Available commands: ")
