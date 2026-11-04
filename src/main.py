@@ -46,7 +46,15 @@ if __name__ == "__main__":
             while True:
                 args = session.prompt("> ").split()
 
-                if len(args) == 0:
+                if not args:
+                    continue
+
+                if (
+                    not args[0].startswith("/")
+                    or args[0] == "/leave"
+                    or args[0] == "/send"
+                ):
+                    print("[*] You are not in any chat.")
                     continue
 
                 handler = commands.get(args[0])
