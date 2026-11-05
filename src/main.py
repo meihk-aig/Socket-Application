@@ -40,6 +40,7 @@ if __name__ == "__main__":
                 "/status": lambda args: cmds.status_command(args, host),
                 "/list": lambda args: cmds.list_command(args, host),
                 "/chat": lambda args: cmds.chat_command(args, manager, session),
+                "/help": lambda args: cmds.help_command(args),
             }
 
             print("[*] Type /help for instructions.")
