@@ -10,13 +10,13 @@ class Broadcaster:
         self.recieve_socket = self.make_udp_socket()
         self.broadcast_socket = self.make_udp_socket()
 
-        self.recieve_thread = thd.Thread(target=self.recieve_message, args=(host,))
-        self.recieve_thread.daemon = True
+        self.recieve_thread = thd.Thread(
+            target=self.recieve_message, args=(host,), daemon=True
+        )
 
         self.broadcast_thread = thd.Thread(
-            target=self.broadcast_message, args=(host, bcast, tcp_port)
+            target=self.broadcast_message, args=(host, bcast, tcp_port), daemon=True
         )
-        self.broadcast_thread.daemon = True
 
         self.stop_flag = thd.Event()
 

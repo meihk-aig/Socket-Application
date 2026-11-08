@@ -1,7 +1,7 @@
 services:
   alice:
     build: .
-    container_name: Alice
+    container_name: alice
     stdin_open: true
     tty: true
     command: python ./src/main.py --name Alice --tcp-port 5050
@@ -11,7 +11,7 @@ services:
 
   bob:
     build: .
-    container_name: Bob
+    container_name: bob
     stdin_open: true
     tty: true
     command: python ./src/main.py --name Bob --tcp-port 5051
@@ -21,7 +21,7 @@ services:
 
   charlie:
     build: .
-    container_name: Charlie
+    container_name: charlie
     stdin_open: true
     tty: true
     command: python ./src/main.py --name Charlie --tcp-port 5052

@@ -7,6 +7,7 @@ import threading as thd
 import time as tm
 import socket as sk
 import argparse as ap
+import os
 
 
 def help_command(args):
@@ -90,8 +91,12 @@ def chat_command(args, manager, session):
         if not message:
             continue
 
-        if message.startswith("/leave"):
-            if message == "/leave":
+        parts = message.split(maxsplit=1)
+        command = parts[0]
+
+        # Leave current chat
+        if command == "/leave":
+            if len(parts) == 1:
                 manager.leave_chat()
                 print(f"[*] You have left the chat with {peer_name}.")
                 break
@@ -99,7 +104,25 @@ def chat_command(args, manager, session):
                 print('[*] Do you mean "/leave"?')
                 continue
 
-        if message.startswith("/"):
+        # Send a file to the current chat partner
+        if command == "/send":
+            if len(parts) != 2:
+                print('[*] Do you mean "/send <file path>"?')
+                continue
+
+            file_path = parts[1]
+
+            if not os.path.isfile(file_path):
+                print(f"[*] File not found: {file_path}")
+                continue
+
+            if manager.send_file(peer_name, file_path):
+                continue
+
+            print(f"[*] Failed to send file to {peer_name}.")
+            continue
+
+        if command.startswith("/"):
             print("[*] You must leave the current chat session to use other commands.")
             continue
 
