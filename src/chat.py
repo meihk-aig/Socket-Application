@@ -246,14 +246,14 @@ class ChatManager:
                 active = self.active_chat == peer_name
 
             if active:
-                print(f"\n[{peer_name}] {message}")
+                print(f"[{peer_name}] {message}")
             else:
                 with self.host.unread_lock:
                     unread = self.host.unread.setdefault(peer_name, [])
                     unread.append(message)
                     count = len(unread)
 
-                print(f"\n[*] New message from {peer_name} ({count} unread)")
+                print(f"[*] New message from {peer_name} ({count} unread)")
 
         self.close_connection(peer_name, "message", conn)
 
@@ -369,7 +369,7 @@ class ChatManager:
                 file.write(chunk)
                 remaining -= len(chunk)
 
-        print(f"\n[*] Received {filename} from {peer_name}")
+        print(f"[*] Received {filename} from {peer_name}")
 
         return True
 
