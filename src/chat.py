@@ -65,7 +65,6 @@ class ChatManager:
                 conn.close()
                 continue
 
-            # Xác định peer dựa trên IP
             with self.host.peers_lock:
                 peers = [
                     name
