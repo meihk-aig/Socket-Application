@@ -14,10 +14,9 @@ import argparse as ap
 
 if __name__ == "__main__":
     try:
+        # These are parser from the argparse module
+        # Eg: Run "python .\src\main.py --name Mathhew" to start the program and set your name Matthew
         with patch_stdout():
-            # These are parser from the argparse module
-            # Eg: Run "python .\src\main.py --name Mathhew" to start the program and set your name Matthew
-
             parser = ap.ArgumentParser()
             parser.add_argument("--name", required=True)
             parser.add_argument("--bcast", default="255.255.255.255")
@@ -47,15 +46,7 @@ if __name__ == "__main__":
             while True:
                 args = session.prompt("> ").split()
 
-                if not args:
-                    continue
-
-                if (
-                    not args[0].startswith("/")
-                    or args[0] == "/leave"
-                    or args[0] == "/send"
-                ):
-                    print("[*] You are not in any chat.")
+                if len(args) == 0:
                     continue
 
                 handler = commands.get(args[0])

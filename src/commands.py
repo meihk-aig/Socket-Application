@@ -7,7 +7,6 @@ import threading as thd
 import time as tm
 import socket as sk
 import argparse as ap
-import os
 
 
 def help_command(args):
@@ -63,16 +62,18 @@ def list_command(args, host):
     with host.peers_lock:
         index = 1
         peers_snapshot = host.peers.copy()
-
         for name, info in peers_snapshot.items():
             current_state = info["state"]
 
             if current_time - info["last_seen"] > c.TIMEOUT:
                 current_state = "away"
 
-            print(f"    {index}. {name:<15} ({info['ip']}) {current_state}.")
+            print(f"    {index}. {name} ({info['ip']}) {current_state}.")
 
             index += 1
+
+
+import os
 
 
 def chat_command(args, manager, session):

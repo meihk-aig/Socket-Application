@@ -300,7 +300,7 @@ class ChatManager:
 
         return True
 
-    def recv_file(self, conn, peer_name):
+    def recv_file(self, conn):
         type_data = self.recv_exact(conn, c.HEADER)
 
         if type_data is None:
@@ -369,14 +369,14 @@ class ChatManager:
                 file.write(chunk)
                 remaining -= len(chunk)
 
-        print(f"\n[*] Received {filename} from {peer_name}")
+        print(f"\n[*] Received file: {filename}")
 
         return True
 
     def file_receive_loop(self, peer_name, conn):
         while not self.stop_event.is_set():
             try:
-                if not self.recv_file(conn, peer_name):
+                if not self.recv_file(conn):
                     break
             except:
                 break
