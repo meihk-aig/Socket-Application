@@ -246,14 +246,14 @@ class ChatManager:
                 active = self.active_chat == peer_name
 
             if active:
-                print(f"\n[{peer_name}] {message}")
+                print(f"[{peer_name}] {message}")
             else:
                 with self.host.unread_lock:
                     unread = self.host.unread.setdefault(peer_name, [])
                     unread.append(message)
                     count = len(unread)
 
-                print(f"\n[*] New message from {peer_name} ({count} unread)")
+                print(f"[*] New message from {peer_name} ({count} unread)")
 
         self.close_connection(peer_name, "message", conn)
 
@@ -300,7 +300,7 @@ class ChatManager:
 
         return True
 
-    def recv_file(self, conn):
+    def recv_file(self, conn, peer_name):
         type_data = self.recv_exact(conn, c.HEADER)
 
         if type_data is None:
@@ -369,14 +369,14 @@ class ChatManager:
                 file.write(chunk)
                 remaining -= len(chunk)
 
-        print(f"\n[*] Received file: {filename}")
+        print(f"[*] Received file: {filename} from {peer_name}.")
 
         return True
 
     def file_receive_loop(self, peer_name, conn):
         while not self.stop_event.is_set():
             try:
-                if not self.recv_file(conn):
+                if not self.recv_file(conn, peer_name):
                     break
             except:
                 break

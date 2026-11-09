@@ -26,7 +26,7 @@ if __name__ == "__main__":
                 bcast = "255.255.255.255"
 
             try:
-                tcp_port = int(input("Enter TCP port (between 1024 and 65535)"))
+                tcp_port = int(input("Enter TCP port (between 1024 and 65535): "))
                 if tcp_port < 1024 or tcp_port > 65535:
                     raise ValueError
             except ValueError:
