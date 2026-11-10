@@ -7,6 +7,7 @@ import commands as cmds
 import prompt_toolkit as ptk
 from prompt_toolkit.patch_stdout import patch_stdout
 
+import argparse as ap
 import threading as thd
 import time as tm
 import socket as sk
@@ -17,29 +18,20 @@ if __name__ == "__main__":
         # Eg: Run "python .\src\main.py --name Mathhew" to start the program and set your name Matthew
         with patch_stdout():
 
-            name = " "
-            while " " in name:
-                name = input("Enter your name (No space): ")
+            parser = ap.ArgumentParser()
+            parser.add_argument("--name", required=True)
+            parser.add_argument("--bcast", default="255.255.255.255")
+            parser.add_argument("--tcp-port", type=int, default=5050)
 
-            bcast = input("Enter broadcast address (type 0 for default): ")
-            if bcast == "0":
-                bcast = "255.255.255.255"
+            lst = parser.parse_args()
 
-            try:
-                tcp_port = int(input("Enter TCP port (between 1024 and 65535): "))
-                if tcp_port < 1024 or tcp_port > 65535:
-                    raise ValueError
-            except ValueError:
-                print("[*] Invalid TCP port, set to 5050")
-                tcp_port = 5050
+            host = p.Peer(lst.name)
 
-            host = p.Peer(name)
-
-            broadcaster = brd.Broadcaster(host, bcast, tcp_port)
+            broadcaster = brd.Broadcaster(host, lst.bcast, lst.tcp_port)
             broadcaster.start_broadcasting()
             broadcaster.start_listening()
 
-            manager = cht.ChatManager(tcp_port, host)
+            manager = cht.ChatManager(lst.tcp_port, host)
 
             session = ptk.PromptSession()
 
